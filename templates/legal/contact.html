@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-16">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-4xl font-extrabold text-white mb-2">Contactez-nous</h1>
+        <p class="text-zinc-500 mb-10">Une question, une suggestion ou un partenariat ? Nous sommes à votre écoute.</p>
+
+        <!-- Seksyon pou montre mesaj siksè oswa erè -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-6 p-4 rounded-xl {% if message.tags == 'error' %}bg-red-900 text-red-200{% else %}bg-green-900 text-green-200{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'contact' %}" method="POST" class="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 space-y-6 shadow-2xl">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase">Nom</label>
+                    <input type="text" name="nom" required class="w-full bg-black p-4 rounded-xl border border-zinc-700 text-white focus:border-amber-600 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase">Email</label>
+                    <input type="email" name="email" required class="w-full bg-black p-4 rounded-xl border border-zinc-700 text-white focus:border-amber-600 outline-none transition-all">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase">Message</label>
+                <textarea name="message" rows="5" required class="w-full bg-black p-4 rounded-xl border border-zinc-700 text-white focus:border-amber-600 outline-none transition-all"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-amber-600 text-white font-bold py-4 rounded-xl hover:bg-amber-700 transition-all transform hover:scale-[1.01]">
+                Envoyer le message
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OkayNews | Actualités en direct</title>
+    <meta name="description" content="OkayNews - Plateforme d'actualités en temps réel architecturée par Rocher Jean Romere.">
+    <meta name="author" content="Rocher Jean Romere">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#0ea785">
+    
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+    <style>
+        .pace .pace-progress { background: #d97706; height: 3px; box-shadow: 0 0 10px #d97706; }
+    </style>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0ea785; }
+        .glass { background: rgba(37, 37, 35, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(26, 207, 183, 0.2); }
+        .ultra-nav { background: #3a3434; border-bottom: 2px solid #1f2937; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-200 overflow-x-hidden">
+
+    <!-- Navbar Prensipal -->
+    <nav class="sticky top-0 z-50 glass">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-3xl font-extrabold tracking-tighter text-white italic">
+                Okay<span class="text-amber-600">News</span>
+            </a>
+            
+            <button id="menuBtn" class="md:hidden text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+            
+            <div class="hidden md:flex items-center gap-4">
+                {% if user.is_staff %}
+                    <span class="text-sm text-slate-400">Admin: <strong class="text-white">{{ user.username }}</strong></span>
+                    <a href="/admin/" class="bg-amber-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-amber-700 transition-all shadow-[0_0_15px_rgba(217,119,6,0.3)]">Admin</a>
+                    <a href="{% url 'logout' %}" class="bg-zinc-800 text-slate-300 px-4 py-2.5 rounded-full text-sm hover:bg-red-900 hover:text-white transition-all">Sorti</a>
+                {% else %}
+                    <a href="/admin/" class="text-amber-500 font-semibold hover:text-white transition-colors">Connexion</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="dropdownMenu" class="hidden md:hidden bg-zinc-900 border-t border-zinc-800 p-6 flex flex-col gap-4 text-center">
+            <a href="/" class="hover:text-amber-500">Accueil</a>
+            <a href="/admin/" class="hover:text-amber-500">Tableau de bord</a>
+            <a href="{% url 'about' %}" class="hover:text-amber-500">À propos</a>
+        </div>
+    </nav>
+
+    <!-- Barre de Navigation Ultra Pro -->
+    <div class="hidden md:block ultra-nav py-3">
+        <div class="container mx-auto px-4 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-[13px] font-medium text-slate-300">
+            <a href="/" class="hover:text-amber-500 transition">Accueil</a>
+            <a href="/admin/" class="hover:text-amber-500 transition">Dashboard</a>
+            <a href="{% url 'about' %}" class="hover:text-amber-500 transition">À propos</a>
+            <div class="h-3 w-px bg-zinc-700"></div>
+            <a href="{% url 'confidentialite' %}" class="hover:text-amber-500 transition">Confidentialité</a>
+            <a href="{% url 'conditions' %}" class="hover:text-amber-500 transition">Conditions</a>
+            <a href="{% url 'contact' %}" class="hover:text-amber-500 transition">Contact</a>
+            
+            <button id="refreshBtn" onclick="window.location.reload()" class="ml-2 text-zinc-500 hover:text-emerald-500 transition" title="Rafrechir">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <main class="flex-grow container mx-auto px-6 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+            <div class="lg:col-span-3">
+                {% block content %}{% endblock %}
+            </div>
+            <aside class="lg:col-span-1">
+                <div class="sticky top-28 bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800">
+                    {% include 'includes/sidebar.html' %}
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="relative border-t border-zinc-900 bg-zinc-950 pt-10 pb-6 text-center w-full">
+        <div class="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-zinc-800 to-transparent"></div>
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col items-center gap-4">
+                <a href="/" class="text-2xl font-extrabold tracking-tighter text-white italic">
+                    Okay<span class="text-amber-600">News</span>
+                </a>
+                <p class="text-xs text-zinc-500 max-w-xs">
+                    Actualités en temps réel par <span class="text-emerald-500 font-medium">Rocher Jean Romere</span>.
+                </p>
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="text-[10px] uppercase tracking-widest text-zinc-700 font-bold">&copy; 2026 OkayNews.</p>
+                    <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}">Sitemap</a>
+                    <div class="flex justify-center items-center gap-4 text-[11px] text-zinc-500">
+                        <a href="{% url 'confidentialite' %}" class="hover:text-emerald-500 transition">Confidentialité</a>
+                        <span class="text-zinc-800">•</span>
+                        <a href="{% url 'conditions' %}" class="hover:text-emerald-500 transition">Conditions</a>
+                        <span class="text-zinc-800">•</span>
+                        <a href="{% url 'contact' %}" class="hover:text-amber-500 transition">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="fixed bottom-10 right-10 bg-amber-600 text-white p-4 rounded-full shadow-2xl hover:bg-amber-700 transition-all hidden z-50 animate-bounce">
+        &uarr;
+    </button>
+    
+    <script>
+        // Enregistrement du Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register("{% static 'sw.js' %}")
+                    .then(reg => console.log('Service Worker anrejistre avèk siksè!'))
+                    .catch(err => console.log('Erè anrejistreman:', err));
+            });
+        }
+
+        const refreshBtn = document.getElementById('refreshBtn');
+        refreshBtn.onclick = () => window.location.reload();
+        
+        const menuBtn = document.getElementById('menuBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        menuBtn.onclick = () => dropdownMenu.classList.toggle('hidden');
+
+        const btn = document.getElementById('backToTop');
+        window.onscroll = () => {
+            if (window.scrollY > 300) btn.classList.remove('hidden');
+            else btn.classList.add('hidden');
+        };
+        btn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+    </script>
+</body>
+</html>

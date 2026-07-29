@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-12">
+    
+    <!-- Hero Section / Header -->
+    <div class="mb-16 text-center">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
+            Okay<span class="text-amber-600">News</span> en direct
+        </h1>
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto italic">
+            L'actualité décryptée avec précision par <strong>Rocher Jean Romere</strong>.
+        </p>
+    </div>
+
+    <!-- Grid Layout -->
+    {% if articles %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
+            {% for article in articles %}
+            <article class="group bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden hover:border-amber-600/50 transition-all duration-500 shadow-xl">
+                
+                <!-- Image Section -->
+                <a href="{% url 'article_detail' article.slug %}" class="block overflow-hidden relative">
+                    {% if article.image %}
+                        <img src="{{ article.image.url }}" alt="{{ article.title }}" 
+                             class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    {% else %}
+                        <div class="w-full h-64 bg-zinc-800 flex items-center justify-center text-zinc-600">Pas d'image</div>
+                    {% endif %}
+                    <div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-amber-500 uppercase tracking-widest border border-amber-500/20">
+                        {{ article.category.name }}
+                    </div>
+                </a>
+                
+                <!-- Content Section -->
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-amber-500 transition-colors line-clamp-2">
+                        {{ article.title }}
+                    </h3>
+                    <p class="text-sm text-zinc-400 mb-6 font-mono">
+                        {{ article.created_at|date:"d M Y" }}
+                    </p>
+                    <a href="{% url 'article_detail' article.slug %}" 
+                       class="inline-flex items-center text-amber-600 font-bold hover:text-white transition-colors group-hover:gap-2">
+                        Lire l'article <span>→</span>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-24 bg-zinc-900/50 border border-dashed border-zinc-800 rounded-3xl">
+            <h2 class="text-2xl font-semibold text-zinc-500">Aucun article disponible pour le moment.</h2>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "admin/login.html" %}
+{% load i18n %}
+
+{% block content %}
+    {{ block.super }}
+    
+    <!-- Bouton Retour pou al nan akey la -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/" style="
+            display: inline-block;
+            background-color: #1f2937;
+            color: #f3f4f6;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        " onmouseover="this.style.backgroundColor='#d97706'" onmouseout="this.style.backgroundColor='#1f2937'">
+            &larr; Retour à l'accueil
+        </a>
+    </div>
+{% endblock %}

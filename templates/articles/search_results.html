@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Résultats pour : "{{ query }}"</h1>
+<div class="grid gap-4">
+    {% for article in articles %}
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="font-bold">{{ article.title }}</h2>
+            <a href="{% url 'article_detail' article.slug %}" class="text-blue-500">Voir</a>
+        </div>
+    {% empty %}
+        <p>Aucun article trouvé.</p>
+    {% endfor %}
+</div>
+{% endblock %}

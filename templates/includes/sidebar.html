@@ -1,0 +1,51 @@
+<aside class="flex flex-col gap-4 w-full">
+
+    <!-- 1. Recherche (Compact) -->
+    <div class="bg-zinc-900/50 p-4 rounded-xl border border-zinc-800">
+        <h3 class="font-bold text-white mb-3 text-[10px] uppercase tracking-widest text-amber-500">Rechercher</h3>
+        <form action="{% url 'search_articles' %}" method="get" class="flex items-center bg-black border border-zinc-700 rounded-lg overflow-hidden">
+            <input type="text" name="q" placeholder="Rechercher..." class="w-full bg-transparent px-3 py-2 text-xs text-white outline-none">
+            <button type="submit" class="bg-amber-600 text-white px-3 py-2 text-xs font-bold hover:bg-amber-700">OK</button>
+        </form>
+    </div>
+
+    <!-- 2. Catégories (Compact) -->
+    <div class="bg-zinc-900/50 p-4 rounded-xl border border-zinc-800">
+        <h3 class="font-bold text-white mb-3 text-[10px] uppercase tracking-widest text-amber-500">Catégories</h3>
+        <ul class="space-y-1">
+            {% for cat in categories %}
+            <li>
+                <a href="{% url 'category_detail' cat.slug %}" class="flex justify-between items-center px-3 py-2 text-xs text-slate-300 hover:bg-zinc-800 hover:text-white rounded-lg transition-all">
+                    {{ cat.name }}
+                    <span class="text-zinc-600">→</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 3. Newsletter (Optimisé) -->
+    <div class="bg-gradient-to-br from-amber-700 to-amber-900 p-4 rounded-xl text-white text-center">
+        <h3 class="font-bold mb-1 text-sm">Newsletter</h3>
+        <p class="text-[10px] text-amber-100 mb-3 opacity-90">Recevez nos analyses exclusives.</p>
+        
+        <form action="{% url 'newsletter_subscribe' %}" method="POST" class="space-y-2">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Email..." required class="w-full p-2 rounded-lg text-black text-xs outline-none">
+            <button type="submit" class="w-full bg-black text-white font-bold py-2 rounded-lg text-xs hover:bg-zinc-900">S'abonner</button>
+        </form>
+        
+       
+    </div>
+
+    <!-- 4. Suivez-nous -->
+    <div class="bg-zinc-900/50 p-4 rounded-xl border border-zinc-800 text-center">
+        <h3 class="font-bold text-white mb-3 text-[10px] uppercase tracking-widest text-amber-500">Suivez-nous</h3>
+        <div class="flex justify-center gap-2">
+            <a href="#" class="p-2 bg-zinc-800 rounded-full text-[10px] text-white hover:bg-amber-600">FB</a>
+            <a href="#" class="p-2 bg-zinc-800 rounded-full text-[10px] text-white hover:bg-amber-600">TW</a>
+            <a href="#" class="p-3 bg-zinc-800 rounded-full text-[10px] text-white hover:bg-amber-600">IG</a>
+        </div>
+    </div>
+
+</aside>
